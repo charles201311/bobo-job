@@ -24,12 +24,14 @@
 
 				<tr>
 					<td>姓名: <form:input path="name"></form:input>
+					<form:errors path="name" cssStyle="color:red"></form:errors>
 					</td>
 
 				</tr>
 
 				<tr>
 					<td>生日: <form:input path="birthday"></form:input>
+					<form:errors path="birthday" cssStyle="color:red"></form:errors>
 					</td>
 				</tr>
 

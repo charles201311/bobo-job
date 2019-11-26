@@ -60,9 +60,11 @@ public class UserController {
 	}
 
 	@PostMapping("add")
-	public String add(HttpServletRequest request, User user, MultipartFile file, Integer[] scores, Integer[] pids,
-			BindingResult result) {
-		// if(result.hasErrors()) { return "add"; }
+	public String add(HttpServletRequest request, @Valid @ModelAttribute User user,BindingResult result, MultipartFile file, 
+			Integer[] scores, Integer[] pids
+			) {
+		//如果不符合校验规则,则回到增加页面,回显
+		 if(result.hasErrors()) { return "add"; }
 
 		if (!file.isEmpty()) {
 			// 文件上传路径.把文件放入项目的 /resource/pic 下

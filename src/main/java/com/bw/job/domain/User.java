@@ -3,19 +3,21 @@ package com.bw.job.domain;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Past;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
 
 public class User {
     private Integer id;
 
-   // @Length(min = 1,max = 3,message = "姓名的长度必须1-3之间")
-    @NotEmpty(message = "不能为空")
+    @Length(min = 1,max = 5,message = "姓名的长度必须1-5之间")
     private String name;
 
-    //@Past(message ="日期必须是一个过去的日期" )
+    @Past(message ="日期必须是一个过去的日期" )
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthday;
 
