@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bw.job.dao.UserMapper">
+	<resultMap id="BaseResultMap" type="com.bw.job.domain.User">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="birthday" property="birthday" jdbcType="DATE" />
+		<result column="created" property="created" jdbcType="DATE" />
+		<result column="sex" property="sex" jdbcType="VARCHAR" />
+		<result column="picUrl" property="picUrl" jdbcType="VARCHAR" />
+		<result column="avgscore" property="avgScore" jdbcType="VARCHAR" />
+		
+		<!-- 一个人有多个分数 -->
+		<collection property="list" ofType="Score">
+		  <result column="score" property="score"/>
+		  <!-- 分数对应的职位 -->
+		  <association property="position" javaType="position">
+		   <result column="pname" property="name"/>
+		  </association>
+		
+		</collection>
+	</resultMap>
+
+  <select id="select" resultMap="BaseResultMap">
+   select  u.*,s.score,p.name as pname from t_user  u  
+    LEFT JOIN t_score  s on u.id=s.uid LEFT JOIN t_position p on s.pid =p.id 
+    where u.id=#{uid}
+  
+  
+  </select>
+
+
+	<select id="selects" resultMap="BaseResultMap">
+		select u.*,(select avg(score) from t_score s where s.uid=u.id) avgscore from t_user  u
+
+	</select>
+	<select id="selectsPosition" resultType="position">
+		select * from t_position
+
+	</select>
+
+
+	<insert id="insertSelective"
+		parameterType="com.bw.job.domain.User" useGeneratedKeys="true"
+		keyProperty="id">
+
+
+		insert into t_user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="birthday != null">
+				birthday,
+			</if>
+			<if test="created != null">
+				created,
+			</if>
+			<if test="sex != null">
+				sex,
+			</if>
+			<if test="picUrl != null">
+				picUrl,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="birthday != null">
+				#{birthday,jdbcType=DATE},
+			</if>
+			<if test="created != null">
+				#{created,jdbcType=DATE},
+			</if>
+			<if test="sex != null">
+				#{sex,jdbcType=VARCHAR},
+			</if>
+			<if test="picUrl != null">
+				#{picUrl,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+
+
+
+</mapper>
